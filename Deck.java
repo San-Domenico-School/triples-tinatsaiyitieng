@@ -1,17 +1,80 @@
+import greenfoot.*;
+import java.util.ArrayList;
 /**
  * Write a description of class Deck here.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @Tina Tsai
+ * 1/19/2024
  */
-
-import greenfoot.*;
 
 public class Deck 
 {
+    private Card[] unShuffledDeck;
+    private ArrayList<Card> shuffledDeck = new ArrayList<Card>();
+    
+    Deck(int numOfCardsInDeck)
+    {
+        numOfCardsInDeck = limitNumCardsInDeck(numOfCardsInDeck);  // limits size to 27 or 81        
+        unShuffledDeck = new Card[numOfCardsInDeck + 1];           // playing cards plus blank card
+        shuffledDeck = new ArrayList<>();                          // Instantiates ArrayList with no elements
+        populateUnshuffledDeckWithCards(numOfCardsInDeck);         // Initializes Unshuffled Deck
+        createShuffledDeck();                                      // Initializes shuffled deck excluding blank card
+    }
+    
+    //Keeps track of how many unused cards remain in the deck
+    public int getNumCardsInDeck()
+    {
+        return shuffledDeck.size();
+    }
+
+    //Returns the top card of the deck as the cards are dealt.
+    public Card getTopCard()
+    {
+        System.out.println(shuffledDeck.size());
+        return shuffledDeck.remove(0);
+    }
+    
+    //Returns a card at a specific location in the deck
+    public Card getShuffledCard(int index)
+    {
+        return shuffledDeck.get(index);
+    }
+    
+    //Returns the entire shuffled deck
+    public ArrayList<Card> getShuffledDeck()
+    {
+        return shuffledDeck;
+    }
+    
+    //Forces the number of cards in the unshuffled deck to either be 27 
+    //(3 set of 3 characteristics of triples) or 
+    //81(3 set of 4 characteristics of triples)
+    public int limitNumCardsInDeck(int parameter)
+    {
+        if (parameter <= 27)
+        {
+            return 27;
+        }
+        else
+        {
+            return 81;
+        }
+    }
+    
+    //Shuffles the unshuffled deck to form the shuffled deck
+    //Removes blank card
+    private void createShuffledDeck()
+    {
+        shuffledDeck.clear();
+        for(int i = 1; i < unShuffledDeck.length; i++)
+        {
+            shuffledDeck.add((int) (Math.random() * shuffledDeck.size()), unShuffledDeck[i]);
+        }
+    }
+    
     /****************************************************
     ***   Leave as comment until ready to implement   ***
-    *****************************************************
+    *****************************************************/
     // adds all the cards to the unshuffled deck.   
     private void populateUnshuffledDeckWithCards(int numOfCardsInDeck)        
     {
@@ -269,5 +332,5 @@ public class Deck
           }
     }
     
-    **************  END OF COMMENT BLOCK  ***************/
+
 }
