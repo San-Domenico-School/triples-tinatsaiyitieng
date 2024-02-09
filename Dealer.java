@@ -51,21 +51,49 @@ public class Dealer extends Actor
     
     public void endGame()
     {
-        
+        if(triplesRemaining == 0)
+        {
+            Greenfoot.stop();
+        }
     }
     
     public void checkIfTriple()
     {
-        
+        System.out.println(cardsSelected[0]);
+        boolean num = ((cardsSelected[0].getNumberOfShapes() + cardsSelected[1].getNumberOfShapes() + cardsSelected[2].getNumberOfShapes()) % 3 == 0);
+        boolean color = ((cardsSelected[0].getColor().ordinal() + cardsSelected[1].getColor().ordinal() + cardsSelected[2].getColor().ordinal()) % 3 == 0);
+        boolean shape = ((cardsSelected[0].getShape().ordinal() + cardsSelected[1].getShape().ordinal() + cardsSelected[2].getShape().ordinal()) % 3 == 0);
+        boolean shading = ((cardsSelected[0].getShading() + cardsSelected[1].getShading() + cardsSelected[2].getShading()) % 3 == 0);
+        if(num && color && shape && shading)
+        {
+            actionIfTriple();
+        }
+        else
+        {
+            Animations.wobble(cardsSelected);
+        }
     }
     
     public void actionIfTriple()
     {
-        
+        for(int i = 0; i < 3; i++)
+        {
+            getWorld().addObject(deck.getTopCard(), 
+                                 cardsSelected[i].getX(), cardsSelected[i].getY());
+            getWorld().removeObject(cardsSelected[i]);
+        }
+        Animations.slideAndTurn(cardsSelected);
+        triplesRemaining--;
+        Scorekeeper.updateScore();
+        setUI();
+        endGame();
     }
     
-    public void setCardsSelected(ArrayList<Card> cardList, Card[] cardArray,ArrayList<Integer> indexList)
+    public void setCardsSelected(ArrayList<Card> cardsOnBoard, Card[] cardArray,ArrayList<Integer> indexList)
     {
-        
+        this.cardsOnBoard = cardsOnBoard;
+        selectedCardsIndex = indexList;
+        cardsSelected = cardArray;
+        checkIfTriple();
     }
 }

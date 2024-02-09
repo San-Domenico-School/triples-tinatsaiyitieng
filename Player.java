@@ -27,7 +27,6 @@ public class Player extends Actor
         if(setCardsSelected())
         {
             dealer.setCardsSelected(cardsOnBoard, cardsSelected, selectedCardsIndex);
-            dealer.checkIfTriple();
             resetCardsSelected();
         }
     }
